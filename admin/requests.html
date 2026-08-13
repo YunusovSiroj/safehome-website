@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>So'rovlar — SafeHome Admin</title>
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="admin-shell">
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h1>So'rovlar / Buyurtmalar</h1>
+        <p>Saytdagi B2B formadan kelib tushgan murojaatlar</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel__head"><h2>Barcha so'rovlar</h2></div>
+      <table>
+        <thead>
+          <tr><th>Ism</th><th>Telefon</th><th>Kompaniya</th><th>Obyekt</th><th>Xabar</th><th>Sana</th><th>Status</th><th></th></tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<script src="js/store.js"></script>
+<script src="js/admin.js"></script>
+<script>
+  const STATUSES = ['yangi', "ko'rib chiqilmoqda", 'yopilgan'];
+  const badgeClass = { 'yangi': 'badge--new', "ko'rib chiqilmoqda": 'badge--progress', 'yopilgan': 'badge--done' };
+
+  function render() {
+    const items = getAll('requests').slice().reverse();
+    const tbody = document.getElementById('rows');
+    if (!items.length) {
+      tbody.innerHTML = `<tr><td colspan="8" class="empty-state">Hali so'rov kelmagan. Saytdagi kontakt formasidan yuborilgan so'rovlar shu yerda ko'rinadi.</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = items.map(r => `
+      <tr>
+        <td><strong>${escapeHtml(r.name)}</strong></td>
+        <td>${escapeHtml(r.phone)}</td>
+        <td>${escapeHtml(r.company || '-')}</td>
+        <td>${escapeHtml(r.object || '-')}</td>
+        <td style="max-width:220px; white-space:normal;">${escapeHtml(r.message || '-')}</td>
+        <td>${fmtDate(r.createdAt)}</td>
+        <td>
+          <select class="status-select" data-id="${r.id}">
+            ${STATUSES.map(s => `<option value="${s}" ${s === r.status ? 'selected' : ''}>${s}</option>`).join('')}
+          </select>
+        </td>
+        <td class="actions"><button class="btn btn--danger btn--icon" data-del="${r.id}">🗑️</button></td>
+      </tr>
+    `).join('');
+
+    tbody.querySelectorAll('.status-select').forEach(sel => {
+      sel.addEventListener('change', () => {
+        updateItem('requests', Number(sel.dataset.id), { status: sel.value });
+        render();
+      });
+    });
+    tbody.querySelectorAll('[data-del]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (confirm("Ushbu so'rovni o'chirishni tasdiqlaysizmi?")) {
+          deleteItem('requests', Number(btn.dataset.del));
+          render();
+        }
+      });
+    });
+  }
+
+  render();
+</script>
+</body>
+</html>

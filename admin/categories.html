@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kategoriyalar — SafeHome Admin</title>
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="admin-shell">
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h1>Mahsulot kategoriyalari</h1>
+        <p>Bosh sahifadagi "Mahsulotlar" bo'limi va katalog sahifalarining sarlavha/tavsifini boshqaring</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel__head"><h2>8 ta kategoriya</h2></div>
+      <table>
+        <thead>
+          <tr><th>Kategoriya</th><th>Sarlavha</th><th>Tavsif</th><th>Amallar</th></tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h3>Kategoriyani tahrirlash</h3>
+    <form id="catForm">
+      <input type="hidden" name="id">
+      <div class="form__row">
+        <label>Sarlavha (sahifa/karta nomi)</label>
+        <input type="text" name="title" required>
+      </div>
+      <div class="form__row">
+        <label>Tavsif</label>
+        <textarea name="desc" rows="3"></textarea>
+      </div>
+      <div class="modal__actions">
+        <button type="button" class="btn btn--outline" id="cancelBtn">Bekor qilish</button>
+        <button type="submit" class="btn btn--primary">Saqlash</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/store.js"></script>
+<script src="js/admin.js"></script>
+<script>
+  const overlay = document.getElementById('modalOverlay');
+  const form = document.getElementById('catForm');
+
+  function openModal(item) {
+    form.reset();
+    form.id.value = item.id;
+    form.title.value = item.title;
+    form.desc.value = item.desc;
+    overlay.classList.add('open');
+  }
+  function closeModal() { overlay.classList.remove('open'); }
+
+  document.getElementById('cancelBtn').addEventListener('click', closeModal);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form).entries());
+    updateItem('categories', Number(data.id), {
+      title: data.title.trim(),
+      desc: data.desc.trim(),
+    });
+    closeModal();
+    render();
+  });
+
+  function render() {
+    const items = getAll('categories');
+    const productCounts = {};
+    getAll('products').forEach((p) => { productCounts[p.category] = (productCounts[p.category] || 0) + 1; });
+    const tbody = document.getElementById('rows');
+    tbody.innerHTML = items.map(c => `
+      <tr>
+        <td><strong>${escapeHtml(c.category)}</strong><br><span style="color:var(--text-muted);font-size:12px;">${productCounts[c.category] || 0} mahsulot</span></td>
+        <td>${escapeHtml(c.title)}</td>
+        <td>${escapeHtml(c.desc)}</td>
+        <td class="actions">
+          <button class="btn btn--outline btn--icon" data-edit="${c.id}">✏️</button>
+        </td>
+      </tr>
+    `).join('');
+
+    tbody.querySelectorAll('[data-edit]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = items.find(i => i.id === Number(btn.dataset.edit));
+        openModal(item);
+      });
+    });
+  }
+
+  render();
+</script>
+</body>
+</html>

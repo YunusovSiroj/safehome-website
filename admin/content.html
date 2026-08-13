@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kontent — SafeHome Admin</title>
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="admin-shell">
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h1>Kontent boshqaruvi</h1>
+        <p>Bosh sahifa banneri va blog postlari — saytga jonli ulangan</p>
+      </div>
+      <a href="../index-v3.html" target="_blank" class="view-site-link">🔗 Saytni ko'rish</a>
+    </div>
+
+    <div class="panel">
+      <div class="panel__head"><h2>Bosh sahifa banneri (hero)</h2></div>
+      <form id="bannerForm" class="form-grid" style="grid-template-columns:1fr;">
+        <div class="form__row">
+          <label>Ustki yorliq (eyebrow)</label>
+          <input type="text" name="eyebrow" required>
+        </div>
+        <div class="form__row">
+          <label>Tavsif matni</label>
+          <textarea name="desc" rows="3" required></textarea>
+        </div>
+        <div class="form-grid__actions">
+          <button type="submit" class="btn btn--primary">Saqlash</button>
+          <span id="savedHint" class="saved-hint" hidden>Saqlandi ✓ — saytni yangilang</span>
+        </div>
+      </form>
+    </div>
+
+    <div class="panel">
+      <div class="panel__head"><h2>Kompaniya haqida</h2></div>
+      <form id="aboutForm" class="form-grid">
+        <div class="form__row form__row--full">
+          <label>Sarlavha</label>
+          <input type="text" name="title" required>
+        </div>
+        <div class="form__row form__row--full">
+          <label>Tavsif</label>
+          <textarea name="desc" rows="2" required></textarea>
+        </div>
+        <div class="form__row">
+          <label>Direktor</label>
+          <input type="text" name="director" required>
+        </div>
+        <div class="form__row">
+          <label>Manzil</label>
+          <input type="text" name="address" required>
+        </div>
+        <div class="form__row form__row--full">
+          <label>Faoliyat</label>
+          <input type="text" name="activity" required>
+        </div>
+        <div class="form-grid__actions">
+          <button type="submit" class="btn btn--primary">Saqlash</button>
+          <span id="aboutSavedHint" class="saved-hint" hidden>Saqlandi ✓ — saytni yangilang</span>
+        </div>
+      </form>
+    </div>
+
+    <div class="panel">
+      <div class="panel__head"><h2>Kontakt ma'lumotlari</h2></div>
+      <form id="contactInfoForm" class="form-grid">
+        <div class="form__row">
+          <label>Manzil</label>
+          <input type="text" name="address" required>
+        </div>
+        <div class="form__row">
+          <label>Telefon</label>
+          <input type="text" name="phone" required>
+        </div>
+        <div class="form__row">
+          <label>Email</label>
+          <input type="text" name="email" required>
+        </div>
+        <div class="form__row">
+          <label>Telegram / WhatsApp</label>
+          <input type="text" name="telegram" required>
+        </div>
+        <div class="form-grid__actions">
+          <button type="submit" class="btn btn--primary">Saqlash</button>
+          <span id="contactSavedHint" class="saved-hint" hidden>Saqlandi ✓ — saytni yangilang</span>
+        </div>
+      </form>
+    </div>
+
+    <div class="panel">
+      <div class="panel__head">
+        <h2>Blog / Yangiliklar</h2>
+        <button class="btn btn--primary" id="addBtn">+ Post qo'shish</button>
+      </div>
+      <table>
+        <thead><tr><th>Sarlavha</th><th>Qisqacha matn</th><th>Sana</th><th>Amallar</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h3 id="modalTitle">Post qo'shish</h3>
+    <form id="postForm">
+      <input type="hidden" name="id">
+      <div class="form__row">
+        <label>Sarlavha</label>
+        <input type="text" name="title" required>
+      </div>
+      <div class="form__row">
+        <label>Qisqacha matn</label>
+        <textarea name="excerpt" rows="3" required></textarea>
+      </div>
+      <div class="form__row">
+        <label>Rasm (URL, ixtiyoriy)</label>
+        <input type="text" name="image" placeholder="assets/img/...">
+      </div>
+      <div class="form__row">
+        <label>Instagram yoki YouTube link (ixtiyoriy)</label>
+        <input type="text" name="socialUrl" placeholder="https://instagram.com/... yoki https://youtube.com/...">
+      </div>
+      <div class="modal__actions">
+        <button type="button" class="btn btn--outline" id="cancelBtn">Bekor qilish</button>
+        <button type="submit" class="btn btn--primary">Saqlash</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/store.js"></script>
+<script src="js/admin.js"></script>
+<script>
+  // Banner form
+  const bannerForm = document.getElementById('bannerForm');
+  const savedHint = document.getElementById('savedHint');
+  const banner = getBanner();
+  bannerForm.eyebrow.value = banner.eyebrow;
+  bannerForm.desc.value = banner.desc;
+  bannerForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    saveBanner({ eyebrow: bannerForm.eyebrow.value.trim(), desc: bannerForm.desc.value.trim() });
+    savedHint.hidden = false;
+    setTimeout(() => savedHint.hidden = true, 2500);
+  });
+
+  // About form
+  const aboutForm = document.getElementById('aboutForm');
+  const aboutSavedHint = document.getElementById('aboutSavedHint');
+  const about = getAbout();
+  aboutForm.title.value = about.title;
+  aboutForm.desc.value = about.desc;
+  aboutForm.director.value = about.director;
+  aboutForm.address.value = about.address;
+  aboutForm.activity.value = about.activity;
+  aboutForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    saveAbout({
+      title: aboutForm.title.value.trim(),
+      desc: aboutForm.desc.value.trim(),
+      director: aboutForm.director.value.trim(),
+      address: aboutForm.address.value.trim(),
+      activity: aboutForm.activity.value.trim(),
+    });
+    aboutSavedHint.hidden = false;
+    setTimeout(() => aboutSavedHint.hidden = true, 2500);
+  });
+
+  // Contact info form
+  const contactInfoForm = document.getElementById('contactInfoForm');
+  const contactSavedHint = document.getElementById('contactSavedHint');
+  const contactInfo = getContactInfo();
+  contactInfoForm.address.value = contactInfo.address;
+  contactInfoForm.phone.value = contactInfo.phone;
+  contactInfoForm.email.value = contactInfo.email;
+  contactInfoForm.telegram.value = contactInfo.telegram;
+  contactInfoForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    saveContactInfo({
+      address: contactInfoForm.address.value.trim(),
+      phone: contactInfoForm.phone.value.trim(),
+      email: contactInfoForm.email.value.trim(),
+      telegram: contactInfoForm.telegram.value.trim(),
+    });
+    contactSavedHint.hidden = false;
+    setTimeout(() => contactSavedHint.hidden = true, 2500);
+  });
+
+  // Posts CRUD
+  const overlay = document.getElementById('modalOverlay');
+  const form = document.getElementById('postForm');
+  const modalTitle = document.getElementById('modalTitle');
+
+  function openModal(item) {
+    form.reset();
+    if (item) {
+      modalTitle.textContent = 'Postni tahrirlash';
+      form.id.value = item.id;
+      form.title.value = item.title;
+      form.excerpt.value = item.excerpt;
+      form.image.value = item.image || '';
+      form.socialUrl.value = item.socialUrl || '';
+    } else {
+      modalTitle.textContent = "Post qo'shish";
+      form.id.value = '';
+    }
+    overlay.classList.add('open');
+  }
+  function closeModal() { overlay.classList.remove('open'); }
+  document.getElementById('addBtn').addEventListener('click', () => openModal(null));
+  document.getElementById('cancelBtn').addEventListener('click', closeModal);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form).entries());
+    const payload = { title: data.title.trim(), excerpt: data.excerpt.trim(), image: data.image.trim(), socialUrl: data.socialUrl.trim() };
+    if (data.id) {
+      updateItem('posts', Number(data.id), payload);
+    } else {
+      payload.createdAt = new Date().toISOString().slice(0, 10);
+      addItem('posts', payload);
+    }
+    closeModal();
+    render();
+  });
+
+  function render() {
+    const items = getAll('posts');
+    const tbody = document.getElementById('rows');
+    if (!items.length) {
+      tbody.innerHTML = `<tr><td colspan="4" class="empty-state">Postlar yo'q.</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = items.map(p => `
+      <tr>
+        <td><strong>${escapeHtml(p.title)}</strong></td>
+        <td>${escapeHtml(p.excerpt)}</td>
+        <td>${fmtDate(p.createdAt)}</td>
+        <td class="actions">
+          <button class="btn btn--outline btn--icon" data-edit="${p.id}">✏️</button>
+          <button class="btn btn--danger btn--icon" data-del="${p.id}">🗑️</button>
+        </td>
+      </tr>
+    `).join('');
+    tbody.querySelectorAll('[data-edit]').forEach(btn => {
+      btn.addEventListener('click', () => openModal(items.find(i => i.id === Number(btn.dataset.edit))));
+    });
+    tbody.querySelectorAll('[data-del]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (confirm("Ushbu postni o'chirishni tasdiqlaysizmi?")) { deleteItem('posts', Number(btn.dataset.del)); render(); }
+      });
+    });
+  }
+  render();
+</script>
+</body>
+</html>

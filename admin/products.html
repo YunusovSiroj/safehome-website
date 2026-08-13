@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mahsulotlar — SafeHome Admin</title>
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="admin-shell">
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h1>Mahsulotlar boshqaruvi</h1>
+        <p>Kategoriya, rasm (emoji-ikonka) va tavsifni boshqaring</p>
+      </div>
+      <button class="btn btn--primary" id="addBtn">+ Mahsulot qo'shish</button>
+    </div>
+
+    <div class="stat-grid" id="categoryStats"></div>
+
+    <div class="panel">
+      <div class="panel__head"><h2>Barcha mahsulotlar</h2></div>
+      <table>
+        <thead>
+          <tr><th>Ikonka</th><th>Nomi</th><th>Kategoriya</th><th>Tavsif</th><th>Amallar</th></tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h3 id="modalTitle">Mahsulot qo'shish</h3>
+    <form id="productForm">
+      <input type="hidden" name="id">
+      <div class="form__row">
+        <label>Nomi</label>
+        <input type="text" name="name" required placeholder="Masalan: Akuvox R29C">
+      </div>
+      <div class="form__row">
+        <label>Kategoriya</label>
+        <select name="category" required>
+          <option>Domofonlar</option>
+          <option>Videoperegovor panellari</option>
+          <option>ZigBee sensorlar</option>
+          <option>ZigBee switch / rele</option>
+          <option>Smart panellar</option>
+          <option>Access control</option>
+          <option>Kirish nazorati kontrollerlari</option>
+          <option>IP telefonlar</option>
+        </select>
+      </div>
+      <div class="form__row">
+        <label>Ikonka (emoji) yoki rasm yo'li</label>
+        <input type="text" name="img" placeholder="🚪  yoki  ../assets/img/products/nomi.jpg">
+      </div>
+      <div class="form__row">
+        <label>Tavsif</label>
+        <textarea name="desc" rows="3" placeholder="Qisqa texnik tavsif"></textarea>
+      </div>
+      <div class="modal__actions">
+        <button type="button" class="btn btn--outline" id="cancelBtn">Bekor qilish</button>
+        <button type="submit" class="btn btn--primary">Saqlash</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/store.js"></script>
+<script src="js/admin.js"></script>
+<script>
+  const overlay = document.getElementById('modalOverlay');
+  const form = document.getElementById('productForm');
+  const modalTitle = document.getElementById('modalTitle');
+
+  function openModal(item) {
+    form.reset();
+    if (item) {
+      modalTitle.textContent = 'Mahsulotni tahrirlash';
+      form.id.value = item.id;
+      form.name.value = item.name;
+      form.category.value = item.category;
+      form.img.value = item.img;
+      form.desc.value = item.desc;
+    } else {
+      modalTitle.textContent = "Mahsulot qo'shish";
+      form.id.value = '';
+    }
+    overlay.classList.add('open');
+  }
+  function closeModal() { overlay.classList.remove('open'); }
+
+  document.getElementById('addBtn').addEventListener('click', () => openModal(null));
+  document.getElementById('cancelBtn').addEventListener('click', closeModal);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form).entries());
+    const payload = {
+      name: data.name.trim(),
+      category: data.category,
+      img: data.img.trim() || '📦',
+      desc: data.desc.trim(),
+    };
+    if (data.id) {
+      updateItem('products', Number(data.id), payload);
+    } else {
+      payload.createdAt = new Date().toISOString().slice(0, 10);
+      addItem('products', payload);
+    }
+    closeModal();
+    render();
+  });
+
+  function renderCategoryStats() {
+    const items = getAll('products');
+    const counts = {};
+    items.forEach((p) => { counts[p.category] = (counts[p.category] || 0) + 1; });
+    const grid = document.getElementById('categoryStats');
+    grid.innerHTML = Object.entries(counts).map(([category, count]) => `
+      <div class="stat-card">
+        <div class="stat-card__icon">📦</div>
+        <strong>${count}</strong>
+        <span>${escapeHtml(category)}</span>
+      </div>
+    `).join('');
+  }
+
+  function render() {
+    renderCategoryStats();
+    const items = getAll('products');
+    const tbody = document.getElementById('rows');
+    if (!items.length) {
+      tbody.innerHTML = `<tr><td colspan="5" class="empty-state">Mahsulotlar yo'q. Yuqoridagi tugma orqali qo'shing.</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = items.map(p => `
+      <tr>
+        <td>${isImagePath(p.img) ? `<img src="${escapeHtml(p.img)}" alt="" style="width:44px;height:44px;object-fit:contain;border-radius:8px;background:#f2f6f9;">` : `<span style="font-size:22px;">${escapeHtml(p.img)}</span>`}</td>
+        <td><strong>${escapeHtml(p.name)}</strong></td>
+        <td>${escapeHtml(p.category)}</td>
+        <td>${escapeHtml(p.desc)}</td>
+        <td class="actions">
+          <button class="btn btn--outline btn--icon" data-edit="${p.id}">✏️</button>
+          <button class="btn btn--danger btn--icon" data-del="${p.id}">🗑️</button>
+        </td>
+      </tr>
+    `).join('');
+
+    tbody.querySelectorAll('[data-edit]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = items.find(i => i.id === Number(btn.dataset.edit));
+        openModal(item);
+      });
+    });
+    tbody.querySelectorAll('[data-del]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (confirm("Ushbu mahsulotni o'chirishni tasdiqlaysizmi?")) {
+          deleteItem('products', Number(btn.dataset.del));
+          render();
+        }
+      });
+    });
+  }
+
+  render();
+</script>
+</body>
+</html>

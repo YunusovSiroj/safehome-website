@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin kirish — SafeHome.uz</title>
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="login-page">
+
+  <div class="login-card">
+    <img src="../assets/img/logo.jpg" alt="SafeHome.uz">
+    <h1>Admin panel</h1>
+    <p class="sub">SafeHome.uz boshqaruv paneliga kirish</p>
+
+    <div class="login-error" id="loginError">Email yoki parol noto'g'ri.</div>
+
+    <form id="loginForm">
+      <div class="form__row">
+        <label>Email</label>
+        <input type="email" name="email" placeholder="admin@safehome.uz" required>
+      </div>
+      <div class="form__row">
+        <label>Parol</label>
+        <input type="password" name="password" placeholder="••••••••" required>
+      </div>
+      <button type="submit" class="btn btn--primary" style="width:100%; justify-content:center; padding:13px;">Kirish</button>
+    </form>
+
+    <div class="login-hint">
+      Demo login: <strong>admin@safehome.uz</strong> / <strong>safehome2026</strong>
+    </div>
+  </div>
+
+<script src="js/store.js"></script>
+<script>
+  if (isLoggedIn()) window.location.href = 'dashboard.html';
+
+  const form = document.getElementById('loginForm');
+  const errorBox = document.getElementById('loginError');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const ok = login(data.get('email').trim(), data.get('password'));
+    if (ok) {
+      window.location.href = 'dashboard.html';
+    } else {
+      errorBox.classList.add('show');
+    }
+  });
+</script>
+</body>
+</html>

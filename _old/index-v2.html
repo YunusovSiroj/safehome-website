@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SafeHome.uz — Smart Living, Simple Life</title>
+<link rel="stylesheet" href="css/style-v2.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="container topbar__inner">
+    <div class="topbar__contacts">
+      <span>📍 79A Mustaqillik Avenue, Toshkent</span>
+      <span>📞 +998 90 000 00 00</span>
+      <span>✉️ info@safehome.uz</span>
+    </div>
+    <div class="lang-switch">
+      <button class="lang-switch__btn active" data-lang="uz">UZ</button>
+      <span>/</span>
+      <button class="lang-switch__btn" data-lang="ru">RU</button>
+    </div>
+  </div>
+</div>
+
+<header class="header" id="header">
+  <div class="container header__inner">
+    <a href="#top" class="logo">
+      <img src="assets/img/logo.jpg" alt="SafeHome.uz">
+    </a>
+
+    <nav class="nav" id="nav">
+      <a href="#top" data-i18n="nav.home">Bosh sahifa</a>
+      <div class="nav__has-mega">
+        <a href="#products" data-i18n="nav.products">Mahsulotlar</a>
+        <div class="mega">
+          <a href="#products" class="mega__item"><span>🚪</span>Domofonlar</a>
+          <a href="#products" class="mega__item"><span>📹</span>Videoperegovor</a>
+          <a href="#products" class="mega__item"><span>📶</span>ZigBee sensorlar</a>
+          <a href="#products" class="mega__item"><span>🔌</span>ZigBee switch/rele</a>
+          <a href="#products" class="mega__item"><span>🖲️</span>Smart panellar</a>
+          <a href="#products" class="mega__item"><span>🔑</span>Access control</a>
+        </div>
+      </div>
+      <a href="#projects" data-i18n="nav.projects">Loyihalar</a>
+      <a href="#applications" data-i18n="nav.applications">Qo'llanilishi</a>
+      <a href="#about" data-i18n="nav.about">Kompaniya haqida</a>
+      <a href="#news" data-i18n="nav.news">Yangiliklar</a>
+      <a href="#contact" data-i18n="nav.contact">Kontaktlar</a>
+    </nav>
+
+    <div class="header__actions">
+      <a href="#contact" class="btn btn--primary btn--sm" data-i18n="header.cta">So'rov qoldirish</a>
+      <button class="burger" id="burger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO — centered, capability strip instead of floating cards -->
+  <section class="hero" id="top">
+    <div class="container hero__inner">
+      <span class="eyebrow" id="heroEyebrow">Akuvox rasmiy distributori O'zbekistonda</span>
+      <h1><span data-i18n="hero.titleLead">Aqlli uy va xavfsizlik tizimlari —</span> <span class="text-gradient">SafeHome.uz</span></h1>
+      <p class="hero__desc" id="heroDesc">
+        Domofonlar, videoperegovor panellari, ZigBee sensor va switchlar, smart boshqaruv panellari —
+        qurilish tashkilotlari va deviluperlar uchun to'liq yechim, o'rnatishdan texnik xizmatgacha.
+      </p>
+      <div class="hero__cta">
+        <a href="#contact" class="btn btn--primary" data-i18n="hero.ctaPrimary">So'rov yuborish</a>
+        <a href="#products" class="btn btn--ghost" data-i18n="hero.ctaSecondary">Katalogni ko'rish</a>
+      </div>
+    </div>
+    <div class="hero__stats container" style="max-width:760px;">
+      <div><strong>6+</strong><span data-i18n="hero.stat1">Mahsulot kategoriyasi</span></div>
+      <div><strong>10+</strong><span data-i18n="hero.stat2">Yakunlangan obyektlar</span></div>
+      <div><strong>100%</strong><span data-i18n="hero.stat3">Rasmiy sertifikatlangan</span></div>
+    </div>
+    <div class="hero__chips">
+      <a href="#products" class="hero__chip"><span>🚪</span>Domofonlar</a>
+      <a href="#products" class="hero__chip"><span>📹</span>Videoperegovor</a>
+      <a href="#products" class="hero__chip"><span>📶</span>ZigBee sensor</a>
+      <a href="#products" class="hero__chip"><span>🔌</span>ZigBee switch/rele</a>
+      <a href="#products" class="hero__chip"><span>🖲️</span>Smart panel</a>
+      <a href="#products" class="hero__chip"><span>🔑</span>Access control</a>
+    </div>
+  </section>
+
+  <!-- LOGO / TRUST STRIP -->
+  <section class="trust-strip">
+    <div class="container trust-strip__inner" data-reveal>
+      <span data-i18n="trust.label">Ishonchli hamkorlik:</span>
+      <strong data-i18n="trust.item1">Akuvox — rasmiy distributor</strong>
+      <strong>ARKAN · Yangi Toshkent</strong>
+      <strong>GOLD STEP INVEST</strong>
+      <strong>BAYAZITOGLU YAPI</strong>
+    </div>
+  </section>
+
+  <!-- PRODUCT CATEGORIES — alternating editorial rows -->
+  <section class="section" id="products">
+    <div class="container">
+      <div class="section__head" data-reveal>
+        <span class="eyebrow" data-i18n="products.eyebrow">Mahsulotlar katalogi</span>
+        <h2 data-i18n="products.title">Har bir obyekt uchun to'liq smart yechim</h2>
+        <p data-i18n="products.desc">Kategoriyani tanlang — texnik xususiyatlar, datasheet va so'rov formasi har bir mahsulot kartasida.</p>
+      </div>
+
+      <div class="products-list">
+        <div class="product-row" data-reveal data-product-card
+             data-specs-i18n="product1.spec1|product1.spec2|product1.spec3|product1.spec4">
+          <div class="product-row__media"><img src="assets/img/products/door-phone.webp" alt="Akuvox domofon" loading="lazy"></div>
+          <div>
+            <span class="product-row__num">01</span>
+            <h3 data-i18n="product1.title">Domofonlar (Akuvox)</h3>
+            <p data-i18n="product1.desc">IP domofon panellari, video ko'rish, mobil ilova orqali boshqarish. Eng ko'p so'raladigan kategoriya — barcha obyektlarda standart jihozlash sifatida o'rnatiladi.</p>
+            <a href="#" class="card-link" data-i18n="common.details">Batafsil →</a>
+          </div>
+        </div>
+
+        <div class="product-row product-row--reverse" data-reveal data-product-card
+             data-specs-i18n="product2.spec1|product2.spec2|product2.spec3|product2.spec4">
+          <div class="product-row__media"><img src="assets/img/products/indoor-monitor.webp" alt="Akuvox indoor monitor" loading="lazy"></div>
+          <div>
+            <span class="product-row__num">02</span>
+            <h3 data-i18n="product2.title">Videoperegovor panellari</h3>
+            <p data-i18n="product2.desc">Kirish qismlari uchun HD video va ovozli aloqa panellari.</p>
+            <a href="#" class="card-link" data-i18n="common.details">Batafsil →</a>
+          </div>
+        </div>
+
+        <div class="product-row" data-reveal data-product-card
+             data-specs-i18n="product3.spec1|product3.spec2|product3.spec3|product3.spec4">
+          <div class="product-row__media" style="display:flex;align-items:center;justify-content:center;">
+            <div class="product-card__icon" style="position:static;font-size:40px;width:80px;height:80px;">📶</div>
+          </div>
+          <div>
+            <span class="product-row__num">03</span>
+            <h3 data-i18n="product3.title">ZigBee sensorlar</h3>
+            <p data-i18n="product3.desc">Harakat, tutun, suv oqishi, ochiq eshik/deraza sensorlari.</p>
+            <a href="#" class="card-link" data-i18n="common.details">Batafsil →</a>
+          </div>
+        </div>
+
+        <div class="product-row product-row--reverse" data-reveal data-product-card
+             data-specs-i18n="product4.spec1|product4.spec2|product4.spec3|product4.spec4">
+          <div class="product-row__media"><img src="assets/img/products/zigbee-switch.png" alt="Smart switch panel" loading="lazy"></div>
+          <div>
+            <span class="product-row__num">04</span>
+            <h3 data-i18n="product4.title">ZigBee switch / rele</h3>
+            <p data-i18n="product4.desc">Yorug'lik va elektr jihozlarni masofadan boshqarish moduli.</p>
+            <a href="#" class="card-link" data-i18n="common.details">Batafsil →</a>
+          </div>
+        </div>
+
+        <div class="product-row" data-reveal data-product-card
+             data-specs-i18n="product5.spec1|product5.spec2|product5.spec3|product5.spec4">
+          <div class="product-row__media"><img src="assets/img/products/smart-panel.png" alt="Smart control panel" loading="lazy"></div>
+          <div>
+            <span class="product-row__num">05</span>
+            <h3 data-i18n="product5.title">Smart panellar</h3>
+            <p data-i18n="product5.desc">Uy/obyektni yagona markazdan boshqarish uchun sensorli panel.</p>
+            <a href="#" class="card-link" data-i18n="common.details">Batafsil →</a>
+          </div>
+        </div>
+
+        <div class="product-row product-row--reverse" data-reveal data-product-card
+             data-specs-i18n="product6.spec1|product6.spec2|product6.spec3|product6.spec4">
+          <div class="product-row__media"><img src="assets/img/products/access-control.webp" alt="Akuvox Access control" loading="lazy"></div>
+          <div>
+            <span class="product-row__num">06</span>
+            <h3 data-i18n="product6.title">Access control</h3>
+            <p data-i18n="product6.desc">Karta, kod va yuzni tanish orqali kirishni nazorat qilish.</p>
+            <a href="#" class="card-link" data-i18n="common.details">Batafsil →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY US — icon timeline -->
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section__head" data-reveal>
+        <span class="eyebrow" data-i18n="why.eyebrow">Nega SafeHome</span>
+        <h2 data-i18n="why.title">Ishonchli, sertifikatlangan, tez</h2>
+      </div>
+      <div class="timeline">
+        <div class="timeline-card" data-reveal>
+          <span class="timeline-card__icon">01</span>
+          <h4 data-i18n="why1.title">Rasmiy distributor</h4>
+          <p data-i18n="why1.desc">Akuvox mahsulotlari uchun O'zbekistondagi rasmiy hamkor.</p>
+        </div>
+        <div class="timeline-card" data-reveal>
+          <span class="timeline-card__icon">02</span>
+          <h4 data-i18n="why2.title">To'liq o'rnatish</h4>
+          <p data-i18n="why2.desc">Loyihalashdan montaj va texnik xizmatgacha bitta manzilda.</p>
+        </div>
+        <div class="timeline-card" data-reveal>
+          <span class="timeline-card__icon">03</span>
+          <h4 data-i18n="why3.title">Tez yetkazib berish</h4>
+          <p data-i18n="why3.desc">Ombordagi zaxira va tezkor logistika — muddatlarga rioya.</p>
+        </div>
+        <div class="timeline-card" data-reveal>
+          <span class="timeline-card__icon">04</span>
+          <h4 data-i18n="why4.title">B2B qulaylik</h4>
+          <p data-i18n="why4.desc">Pudratchilar uchun maxsus shartlar va shaxsiy menejer.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- APPLICATIONS — horizontal scroll carousel -->
+  <section class="section section--alt" id="applications">
+    <div class="container">
+      <div class="section__head" data-reveal>
+        <span class="eyebrow" data-i18n="apps.eyebrow">Qo'llanilish sohalari</span>
+        <h2 data-i18n="apps.title">Har qanday obyekt uchun moslashuvchan yechim</h2>
+      </div>
+      <div class="apps-carousel">
+        <a href="#contact" class="apps-tile" style="background-image:url('assets/img/applications/residential.jpg')" data-reveal>
+          <span class="apps-tile__icon">🏡</span>
+          <h4 data-i18n="apps1">Elita villalar</h4>
+          <span class="apps-tile__arrow">→</span>
+        </a>
+        <a href="#contact" class="apps-tile" style="background-image:url('assets/img/applications/residential-2wire.jpg')" data-reveal>
+          <span class="apps-tile__icon">🏢</span>
+          <h4 data-i18n="apps2">Turar-joy majmualari</h4>
+          <span class="apps-tile__arrow">→</span>
+        </a>
+        <a href="#contact" class="apps-tile" style="background-image:url('assets/img/applications/commercial.jpg')" data-reveal>
+          <span class="apps-tile__icon">🏬</span>
+          <h4 data-i18n="apps3">Ofis va biznes markazlari</h4>
+          <span class="apps-tile__arrow">→</span>
+        </a>
+        <a href="#contact" class="apps-tile" style="background-image:url('assets/img/applications/public-space.jpg')" data-reveal>
+          <span class="apps-tile__icon">🌳</span>
+          <h4 data-i18n="apps4">Jamoat joylari</h4>
+          <span class="apps-tile__arrow">→</span>
+        </a>
+        <a href="#contact" class="apps-tile" style="background-image:url('assets/img/applications/assisted.jpg')" data-reveal>
+          <span class="apps-tile__icon">🏥</span>
+          <h4 data-i18n="apps5">Parvarish uylari</h4>
+          <span class="apps-tile__arrow">→</span>
+        </a>
+        <a href="#contact" class="apps-tile" style="background-image:url('assets/img/applications/smart-security.jpg')" data-reveal>
+          <span class="apps-tile__icon">💡</span>
+          <h4 data-i18n="apps6">Aqlli uy tizimlari</h4>
+          <span class="apps-tile__arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS — case study list -->
+  <section class="section" id="projects">
+    <div class="container">
+      <div class="section__head" data-reveal>
+        <span class="eyebrow" data-i18n="projects.eyebrow">Loyihalar / Case'lar</span>
+        <h2 data-i18n="projects.title">Amalga oshirilgan obyektlar</h2>
+      </div>
+      <div class="case-list">
+        <a href="#contact" class="case-row" data-reveal>
+          <span class="case-row__num">01</span>
+          <div class="case-row__body">
+            <h3>ARKAN — Yangi Toshkent</h3>
+            <p data-i18n="proj1.desc">SHARQ BAHORI, 22A obyekt. Domofon + Smart Home to'liq jihozlash.</p>
+          </div>
+          <span class="case-row__arrow">→</span>
+        </a>
+        <a href="#contact" class="case-row" data-reveal>
+          <span class="case-row__num">02</span>
+          <div class="case-row__body">
+            <h3>GOLD STEP INVEST</h3>
+            <p data-i18n="proj2.desc">Yangi Toshkent, 32-A/45-D/46-A obyektlari uchun yechim.</p>
+          </div>
+          <span class="case-row__arrow">→</span>
+        </a>
+        <a href="#contact" class="case-row" data-reveal>
+          <span class="case-row__num">03</span>
+          <div class="case-row__body">
+            <h3>AGROMIR BUILDINGS</h3>
+            <p data-i18n="proj3.desc">43-D/44-B obyektlarida Akuvox-AkuBella integratsiyasi.</p>
+          </div>
+          <span class="case-row__arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section section--alt" id="about">
+    <div class="container about">
+      <div class="about__text" data-reveal>
+        <span class="eyebrow" data-i18n="about.eyebrow">Kompaniya haqida</span>
+        <h2>LLC «SAFEHOME»</h2>
+        <p data-i18n="about.desc">Akuvox smart home mahsulotlari bo'yicha O'zbekistondagi rasmiy distributor va integrator. Qurilish tashkilotlari, deviluperlar va texnik nazorat kompaniyalari bilan ishlaymiz.</p>
+        <ul class="about__list">
+          <li><strong data-i18n="about.director">Direktor:</strong> Artikbayev B.U.</li>
+          <li><strong data-i18n="about.address">Manzil:</strong> 79A Mustaqillik Avenue, Mirzo Ulugbek, Toshkent</li>
+          <li><strong data-i18n="about.activityLabel">Faoliyat:</strong> <span data-i18n="about.activity">Akuvox domofon, ZigBee sensor/switch, smart panellar</span></li>
+        </ul>
+      </div>
+      <div class="about__badge" data-reveal>
+        <div class="about__stat"><strong>6+</strong><span data-i18n="hero.stat1">Mahsulot kategoriyasi</span></div>
+        <div class="about__stat"><strong>10+</strong><span data-i18n="hero.stat2">Yakunlangan obyektlar</span></div>
+        <div class="about__stat"><strong>100%</strong><span data-i18n="hero.stat3">Rasmiy sertifikatlangan</span></div>
+        <div class="about__stat"><strong>5+</strong><span>Yangi pudratchilar</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWS / BLOG (admin-managed) -->
+  <section class="section section--alt" id="news">
+    <div class="container">
+      <div class="section__head" data-reveal>
+        <span class="eyebrow" data-i18n="news.eyebrow">Yangiliklar</span>
+        <h2 data-i18n="news.title">So'nggi yangiliklar</h2>
+      </div>
+      <div class="grid grid--3" id="newsGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;"></div>
+    </div>
+  </section>
+
+  <!-- CONTACT / B2B REQUEST FORM -->
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="section__head" data-reveal>
+        <span class="eyebrow" data-i18n="contact.eyebrow">Aloqa</span>
+        <h2 data-i18n="contact.title">So'rov qoldiring — menejer bog'lanadi</h2>
+      </div>
+
+      <div class="contact__info-bar" data-reveal>
+        <div class="contact__item">
+          <span class="contact__label" data-i18n="contact.addressLabel">Manzil</span>
+          <span>79A Mustaqillik Avenue, Toshkent</span>
+        </div>
+        <div class="contact__item">
+          <span class="contact__label" data-i18n="contact.phoneLabel">Telefon</span>
+          <span>+998 90 000 00 00</span>
+        </div>
+        <div class="contact__item">
+          <span class="contact__label" data-i18n="contact.emailLabel">Email</span>
+          <span>info@safehome.uz</span>
+        </div>
+        <div class="contact__item">
+          <span class="contact__label" data-i18n="contact.telegramLabel">Telegram / WhatsApp</span>
+          <span>@safehome_uz</span>
+        </div>
+      </div>
+
+      <form class="form" id="requestForm" data-reveal>
+        <div class="form__row">
+          <label><span data-i18n="form.name">Ism</span> <span>*</span></label>
+          <input type="text" name="name" placeholder="Ismingiz" data-i18n-ph="ph.name" required>
+        </div>
+        <div class="form__row">
+          <label><span data-i18n="form.phone">Telefon</span> <span>*</span></label>
+          <input type="tel" name="phone" placeholder="+998 __ ___ __ __" required>
+        </div>
+        <div class="form__row">
+          <label data-i18n="form.company">Kompaniya nomi</label>
+          <input type="text" name="company" placeholder="Kompaniya nomi" data-i18n-ph="ph.company">
+        </div>
+        <div class="form__row">
+          <label data-i18n="form.object">Obyekt nomi</label>
+          <input type="text" name="object" placeholder="Masalan: ARKAN 22A" data-i18n-ph="ph.object">
+        </div>
+        <div class="form__row form__row--full">
+          <label data-i18n="form.message">Xabar / talab</label>
+          <textarea name="message" rows="4" placeholder="Qanday yordam kerak?" data-i18n-ph="ph.message"></textarea>
+        </div>
+        <button type="submit" class="btn btn--primary btn--block" data-i18n="form.submit">So'rovni yuborish</button>
+        <p class="form__note" data-i18n="form.note">Yuborilgach, so'rovingiz email va Telegram orqali SafeHome menejeriga yetkaziladi.</p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__col--brand">
+        <img src="assets/img/logo.jpg" alt="SafeHome.uz" class="footer__logo">
+        <p data-i18n="footer.tagline">Akuvox smart home mahsulotlari bo'yicha O'zbekistondagi rasmiy distributor.</p>
+      </div>
+      <div class="footer__links">
+        <div class="footer__col">
+          <h5 data-i18n="footer.productsHead">Mahsulotlar</h5>
+          <a href="#products" data-i18n="product1.title">Domofonlar (Akuvox)</a>
+          <a href="#products" data-i18n="product3.title">ZigBee sensorlar</a>
+          <a href="#products" data-i18n="product5.title">Smart panellar</a>
+          <a href="#products" data-i18n="product6.title">Access control</a>
+        </div>
+        <div class="footer__col">
+          <h5 data-i18n="footer.companyHead">Kompaniya</h5>
+          <a href="#about" data-i18n="nav.about">Kompaniya haqida</a>
+          <a href="#projects" data-i18n="nav.projects">Loyihalar</a>
+          <a href="#news" data-i18n="nav.news">Yangiliklar</a>
+          <a href="admin/login.html">Admin</a>
+        </div>
+      </div>
+      <div class="footer__social">
+        <a href="#" aria-label="Telegram">✈️</a>
+        <a href="#" aria-label="Instagram">📷</a>
+        <a href="#" aria-label="WhatsApp">💬</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p data-i18n="footer.rights">&copy; 2026 SafeHome.uz — Barcha huquqlar himoyalangan.</p>
+      <p>79A Mustaqillik Avenue, Toshkent · +998 90 000 00 00 · info@safehome.uz</p>
+    </div>
+  </div>
+</footer>
+
+<!-- PRODUCT DETAIL MODAL -->
+<div class="product-modal-overlay" id="productModalOverlay">
+  <div class="product-modal">
+    <button class="product-modal__close" id="productModalClose" aria-label="Yopish">✕</button>
+    <div class="product-modal__media" id="pmMedia"></div>
+    <div class="product-modal__body">
+      <h3 id="pmTitle"></h3>
+      <p id="pmDesc"></p>
+      <ul class="product-modal__specs" id="pmSpecs"></ul>
+      <a href="#contact" class="btn btn--primary" id="pmCta" data-i18n="hero.ctaPrimary">So'rov yuborish</a>
+    </div>
+  </div>
+</div>
+
+<script src="admin/js/store.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qo'llanilish sohalari — SafeHome Admin</title>
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="admin-shell">
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h1>Qo'llanilish sohalari</h1>
+        <p>Bosh sahifadagi "Har qanday obyekt uchun moslashuvchan yechim" kartochkalari</p>
+      </div>
+      <button class="btn btn--primary" id="addBtn">+ Qo'shish</button>
+    </div>
+
+    <div class="panel">
+      <div class="panel__head"><h2>Barcha kartochkalar</h2></div>
+      <table>
+        <thead>
+          <tr><th>Rasm</th><th>Ikonka</th><th>Nomi</th><th>Havola</th><th>Amallar</th></tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h3 id="modalTitle">Kartochka qo'shish</h3>
+    <form id="appForm">
+      <input type="hidden" name="id">
+      <div class="form__row">
+        <label>Nomi</label>
+        <input type="text" name="title" required placeholder="Masalan: Elita villalar">
+      </div>
+      <div class="form__row">
+        <label>Ikonka (emoji)</label>
+        <input type="text" name="icon" maxlength="4" placeholder="🏡">
+      </div>
+      <div class="form__row">
+        <label>Fon rasmi (URL)</label>
+        <input type="text" name="image" placeholder="assets/img/applications/...">
+      </div>
+      <div class="form__row">
+        <label>Havola (bosilganda qayerga o'tadi)</label>
+        <input type="text" name="link" placeholder="#contact yoki https://...">
+      </div>
+      <div class="modal__actions">
+        <button type="button" class="btn btn--outline" id="cancelBtn">Bekor qilish</button>
+        <button type="submit" class="btn btn--primary">Saqlash</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/store.js"></script>
+<script src="js/admin.js"></script>
+<script>
+  const overlay = document.getElementById('modalOverlay');
+  const form = document.getElementById('appForm');
+  const modalTitle = document.getElementById('modalTitle');
+
+  function openModal(item) {
+    form.reset();
+    if (item) {
+      modalTitle.textContent = 'Kartochkani tahrirlash';
+      form.id.value = item.id;
+      form.title.value = item.title;
+      form.icon.value = item.icon || '';
+      form.image.value = item.image || '';
+      form.link.value = item.link || '';
+    } else {
+      modalTitle.textContent = "Kartochka qo'shish";
+      form.id.value = '';
+    }
+    overlay.classList.add('open');
+  }
+  function closeModal() { overlay.classList.remove('open'); }
+
+  document.getElementById('addBtn').addEventListener('click', () => openModal(null));
+  document.getElementById('cancelBtn').addEventListener('click', closeModal);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form).entries());
+    const payload = {
+      title: data.title.trim(),
+      icon: data.icon.trim(),
+      image: data.image.trim(),
+      link: data.link.trim() || '#contact',
+    };
+    if (data.id) {
+      updateItem('applications', Number(data.id), payload);
+    } else {
+      payload.createdAt = new Date().toISOString().slice(0, 10);
+      addItem('applications', payload);
+    }
+    closeModal();
+    render();
+  });
+
+  function render() {
+    const items = getAll('applications');
+    const tbody = document.getElementById('rows');
+    if (!items.length) {
+      tbody.innerHTML = `<tr><td colspan="5" class="empty-state">Kartochkalar yo'q. Yuqoridagi tugma orqali qo'shing.</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = items.map(p => `
+      <tr>
+        <td>${p.image ? `<img class="mini-thumb" src="../${escapeHtml(p.image)}" alt="">` : '-'}</td>
+        <td>${escapeHtml(p.icon || '-')}</td>
+        <td><strong>${escapeHtml(p.title)}</strong></td>
+        <td>${escapeHtml(p.link || '-')}</td>
+        <td class="actions">
+          <button class="btn btn--outline btn--icon" data-edit="${p.id}">✏️</button>
+          <button class="btn btn--danger btn--icon" data-del="${p.id}">🗑️</button>
+        </td>
+      </tr>
+    `).join('');
+
+    tbody.querySelectorAll('[data-edit]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = items.find(i => i.id === Number(btn.dataset.edit));
+        openModal(item);
+      });
+    });
+    tbody.querySelectorAll('[data-del]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (confirm("Ushbu kartochkani o'chirishni tasdiqlaysizmi?")) {
+          deleteItem('applications', Number(btn.dataset.del));
+          render();
+        }
+      });
+    });
+  }
+
+  render();
+</script>
+</body>
+</html>

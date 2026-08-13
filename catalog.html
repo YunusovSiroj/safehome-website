@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>To'liq katalog — SafeHome.uz</title>
+<link rel="stylesheet" href="css/style-v3.css">
+<style>
+  .catalog-hero { background: var(--bg); padding: 48px 0 40px; }
+  .catalog-hero h1 { font-size: 34px; color: var(--navy); margin-bottom: 10px; }
+  .catalog-hero p { color: var(--text-muted); font-size: 15px; max-width: 560px; }
+  .cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .cat-card {
+    display: block; border-radius: var(--radius-md); overflow: hidden;
+    border: 1px solid var(--border); background: var(--white);
+    transition: transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s var(--ease);
+  }
+  .cat-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); border-color: rgba(38,153,214,.3); }
+  .cat-card__media {
+    height: 220px; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #f5f8fa, #e9eff3); padding: 20px;
+  }
+  .cat-card__media img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .cat-card__media .icon-fallback {
+    width: 90px; height: 90px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 40px;
+    background: linear-gradient(135deg, var(--blue), var(--green));
+    box-shadow: 0 14px 30px rgba(38,153,214,.3);
+  }
+  .cat-card__body { padding: 20px 22px 24px; }
+  .cat-card__count { font-size: 11.5px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; color: var(--blue-dark); margin-bottom: 8px; display: block; }
+  .cat-card h3 { font-size: 18px; color: var(--navy); margin-bottom: 6px; }
+  .cat-card p { font-size: 13.5px; color: var(--text-muted); margin: 0; }
+  @media (max-width: 980px) { .cat-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px) { .cat-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="container header__inner">
+    <a href="index-v3.html" class="logo">
+      <img src="assets/img/logo.jpg" alt="SafeHome.uz">
+    </a>
+    <nav class="nav">
+      <a href="index-v3.html#top">Bosh sahifa</a>
+      <a href="catalog.html">Mahsulotlar</a>
+      <a href="index-v3.html#projects">Loyihalar</a>
+      <a href="index-v3.html#applications">Qo'llanilishi</a>
+      <a href="index-v3.html#about">Kompaniya haqida</a>
+      <a href="index-v3.html#news">Yangiliklar</a>
+      <a href="index-v3.html#contact">Kontaktlar</a>
+    </nav>
+    <div class="header__actions">
+      <a href="index-v3.html#contact" class="btn btn--primary btn--sm">So'rov qoldirish</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="catalog-hero">
+    <div class="container">
+      <span class="eyebrow">To'liq katalog</span>
+      <h1>Barcha mahsulot kategoriyalari</h1>
+      <p>Akuvox rasmiy distributori — domofon, videoperegovor, ZigBee sensor/switch, smart panel va access control. Kategoriyani tanlang.</p>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container">
+      <div class="cat-grid">
+        <a href="product.html?cat=domofon" class="cat-card">
+          <div class="cat-card__media"><img src="assets/img/products/door-phone.webp" alt="Domofonlar"></div>
+          <div class="cat-card__body">
+            <span class="cat-card__count">25 mahsulot</span>
+            <h3>Domofonlar (Akuvox)</h3>
+            <p>IP domofon panellari, video ko'rish, mobil ilova orqali boshqarish.</p>
+          </div>
+        </a>
+        <a href="product.html?cat=video" class="cat-card">
+          <div class="cat-card__media"><img src="assets/img/products/indoor-monitor.webp" alt="Videoperegovor"></div>
+          <div class="cat-card__body">
+            <span class="cat-card__count">23 mahsulot</span>
+            <h3>Videoperegovor panellari</h3>
+            <p>Kirish qismlari uchun HD video va ovozli aloqa panellari.</p>
+          </div>
+        </a>
+        <a href="product.html?cat=sensor" class="cat-card">
+          <div class="cat-card__media"><img src="assets/img/akubela-ref/sensor-motion.png" alt="ZigBee sensorlar"></div>
+          <div class="cat-card__body">
+            <span class="cat-card__count">9 mahsulot</span>
+            <h3>ZigBee sensorlar</h3>
+            <p>Harakat, tutun, suv oqishi, ochiq eshik/deraza sensorlari.</p>
+          </div>
+        </a>
+        <a href="product.html?cat=switch" class="cat-card">
+          <div class="cat-card__media"><img src="assets/img/akubela-ref/switch-1-2gang.png" alt="ZigBee switch"></div>
+          <div class="cat-card__body">
+            <span class="cat-card__count">14 mahsulot</span>
+            <h3>ZigBee switch / rele</h3>
+            <p>Yorug'lik va elektr jihozlarni masofadan boshqarish moduli.</p>
+          </div>
+        </a>
+        <a href="product.html?cat=panel" class="cat-card">
+          <div class="cat-card__media"><img src="assets/img/products/smart-panel.png" alt="Smart panellar"></div>
+          <div class="cat-card__body">
+            <span class="cat-card__count">6 mahsulot</span>
+            <h3>Smart panellar</h3>
+            <p>Uy/obyektni yagona markazdan boshqarish uchun sensorli panel.</p>
+          </div>
+        </a>
+        <a href="product.html?cat=access" class="cat-card">
+          <div class="cat-card__media"><img src="assets/img/akubela-ref/b7d689ff75509117fdcb3f14fbf999d3.png" alt="Access control"></div>
+          <div class="cat-card__body">
+            <span class="cat-card__count">4 mahsulot</span>
+            <h3>Access control</h3>
+            <p>Karta, kod va yuzni tanish orqali kirishni nazorat qilish.</p>
+          </div>
+        </a>
+        <a href="product.html?cat=terminal" class="cat-card">
+          <div class="cat-card__media"><img src="assets/img/akuvox-access/a08.png" alt="Kirish nazorati kontrollerlari"></div>
+          <div class="cat-card__body">
+            <span class="cat-card__count">14 mahsulot</span>
+            <h3>Kirish nazorati kontrollerlari</h3>
+            <p>Eshik kontrollerlari, IP kirish terminallari, karta o'quvchilar va aksessuarlar.</p>
+          </div>
+        </a>
+        <a href="product.html?cat=ipphone" class="cat-card">
+          <div class="cat-card__media"><img src="assets/img/akuvox-ipphone/sp-r50p.png" alt="IP telefonlar"></div>
+          <div class="cat-card__body">
+            <span class="cat-card__count">3 mahsulot</span>
+            <h3>IP telefonlar</h3>
+            <p>Ofis va uy uchun IP telefonlar.</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__col--brand">
+        <img src="assets/img/logo.jpg" alt="SafeHome.uz" class="footer__logo">
+        <p>Akuvox smart home mahsulotlari bo'yicha O'zbekistondagi rasmiy distributor.</p>
+        <div class="footer__social">
+          <a href="https://t.me/safehome_uz" target="_blank" rel="noopener" aria-label="Telegram">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M21.5 3.5 2.7 10.9c-1.2.5-1.2 1.2-.2 1.5l4.8 1.5 1.8 5.6c.2.6.4.9.9.9.4 0 .6-.2.9-.5l2.2-2.1 4.6 3.4c.8.5 1.4.2 1.6-.8l3-14.1c.3-1.2-.5-1.8-1.8-1.8Zm-4.3 4.3-6.7 6.1-.3 3-1.5-4.7 8.5-5.3c.4-.2.7 0 .4.3Z" fill="currentColor"/></svg>
+          </a>
+          <a href="https://instagram.com/safehome_uz" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2.5" y="2.5" width="19" height="19" rx="6" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.8" stroke="currentColor" stroke-width="2"/><circle cx="17.6" cy="6.4" r="1.3" fill="currentColor"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer__col">
+        <h5>Mahsulotlar</h5>
+        <a href="product.html?cat=domofon">Domofonlar (Akuvox)</a>
+        <a href="product.html?cat=sensor">ZigBee sensorlar</a>
+        <a href="product.html?cat=panel">Smart panellar</a>
+        <a href="product.html?cat=access">Access control</a>
+        <a href="product.html?cat=terminal">Kirish nazorati kontrollerlari</a>
+        <a href="product.html?cat=ipphone">IP telefonlar</a>
+      </div>
+      <div class="footer__col">
+        <h5>Kompaniya</h5>
+        <a href="index-v3.html#about">Kompaniya haqida</a>
+        <a href="index-v3.html#projects">Loyihalar</a>
+        <a href="index-v3.html#news">Yangiliklar</a>
+      </div>
+      <div class="footer__col">
+        <h5>Kontaktlar</h5>
+        <span>79A Mustaqillik Avenue, Toshkent</span>
+        <span>+998 90 000 00 00</span>
+        <span>info@safehome.uz</span>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>&copy; 2026 SafeHome.uz — Barcha huquqlar himoyalangan.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

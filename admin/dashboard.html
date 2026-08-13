@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bosh panel — SafeHome Admin</title>
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="admin-shell">
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h1>Bosh panel</h1>
+        <p>SafeHome.uz saytining umumiy holati</p>
+      </div>
+      <a href="../index-v3.html" target="_blank" class="view-site-link">🔗 Saytni ko'rish</a>
+    </div>
+
+    <div class="stat-grid" id="statGrid"></div>
+
+    <div class="panel">
+      <div class="panel__head">
+        <h2>So'nggi so'rovlar</h2>
+        <a href="requests.html" class="btn btn--outline">Barchasini ko'rish</a>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Ism</th><th>Kompaniya</th><th>Obyekt</th><th>Sana</th><th>Status</th></tr>
+        </thead>
+        <tbody id="recentRequests"></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<script src="js/store.js"></script>
+<script src="js/admin.js"></script>
+<script>
+  const badgeClass = { 'yangi': 'badge--new', "ko'rib chiqilmoqda": 'badge--progress', 'yopilgan': 'badge--done' };
+
+  function renderStats() {
+    const products = getAll('products');
+    const projects = getAll('projects');
+    const requests = getAll('requests');
+    const posts = getAll('posts');
+    const newRequests = requests.filter(r => r.status === 'yangi').length;
+
+    document.getElementById('statGrid').innerHTML = `
+      <div class="stat-card"><div class="stat-card__icon">📦</div><strong>${products.length}</strong><span>Mahsulotlar</span></div>
+      <div class="stat-card"><div class="stat-card__icon">🏗️</div><strong>${projects.length}</strong><span>Loyihalar</span></div>
+      <div class="stat-card"><div class="stat-card__icon">📥</div><strong>${requests.length}</strong><span>Jami so'rovlar (${newRequests} yangi)</span></div>
+      <div class="stat-card"><div class="stat-card__icon">📝</div><strong>${posts.length}</strong><span>Blog postlari</span></div>
+    `;
+  }
+
+  function renderRecentRequests() {
+    const requests = getAll('requests').slice().reverse().slice(0, 5);
+    const tbody = document.getElementById('recentRequests');
+    if (!requests.length) {
+      tbody.innerHTML = `<tr><td colspan="5" class="empty-state">Hali so'rovlar yo'q</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = requests.map(r => `
+      <tr>
+        <td>${escapeHtml(r.name)}</td>
+        <td>${escapeHtml(r.company || '-')}</td>
+        <td>${escapeHtml(r.object || '-')}</td>
+        <td>${fmtDate(r.createdAt)}</td>
+        <td><span class="badge ${badgeClass[r.status] || ''}">${escapeHtml(r.status)}</span></td>
+      </tr>
+    `).join('');
+  }
+
+  renderStats();
+  renderRecentRequests();
+</script>
+</body>
+</html>

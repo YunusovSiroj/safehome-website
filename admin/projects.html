@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loyihalar — SafeHome Admin</title>
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="admin-shell">
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h1>Loyihalar / Case'lar</h1>
+        <p>Amalga oshirilgan obyektlarni boshqaring</p>
+      </div>
+      <button class="btn btn--primary" id="addBtn">+ Loyiha qo'shish</button>
+    </div>
+
+    <div class="panel">
+      <div class="panel__head"><h2>Barcha loyihalar</h2></div>
+      <table>
+        <thead>
+          <tr><th>Logo</th><th>Nomi</th><th>Obyekt</th><th>Tavsif</th><th>Sana</th><th>Amallar</th></tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h3 id="modalTitle">Loyiha qo'shish</h3>
+    <form id="projectForm">
+      <input type="hidden" name="id">
+      <div class="form__row">
+        <label>Loyiha/mijoz nomi</label>
+        <input type="text" name="title" required placeholder="Masalan: ARKAN — Yangi Toshkent">
+      </div>
+      <div class="form__row">
+        <label>Obyekt raqami</label>
+        <input type="text" name="object" placeholder="Masalan: 22A">
+      </div>
+      <div class="form__row">
+        <label>Logotip (rasm yuklash)</label>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <img id="logoPreview" src="" alt="" style="width:48px; height:48px; border-radius:12px; object-fit:cover; background:var(--bg); display:none;">
+          <span id="logoPreviewFallback" class="mini-logo"></span>
+          <input type="file" name="logoFile" accept="image/*" style="flex:1;">
+        </div>
+        <span style="font-size:12px; color:var(--text-muted);">Rasm yuklamasangiz, quyidagi 2 harfli belgi ishlatiladi.</span>
+      </div>
+      <div class="form__row">
+        <label>Logo belgisi (2 harf, zaxira)</label>
+        <input type="text" name="logo" maxlength="3" placeholder="Masalan: AR">
+      </div>
+      <div class="form__row">
+        <label>Mijozning veb-sayti (ixtiyoriy)</label>
+        <input type="text" name="website" placeholder="https://...">
+        <span style="font-size:12px; color:var(--text-muted);">Kiritilsa, kartaga bosilganda so'rov formasi o'rniga shu saytga o'tadi.</span>
+      </div>
+      <div class="form__row">
+        <label>Tavsif</label>
+        <textarea name="desc" rows="3" placeholder="O'rnatilgan jihozlar, hajm va h.k."></textarea>
+      </div>
+      <div class="modal__actions">
+        <button type="button" class="btn btn--outline" id="cancelBtn">Bekor qilish</button>
+        <button type="submit" class="btn btn--primary">Saqlash</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/store.js"></script>
+<script src="js/admin.js"></script>
+<script>
+  const overlay = document.getElementById('modalOverlay');
+  const form = document.getElementById('projectForm');
+  const modalTitle = document.getElementById('modalTitle');
+  const logoPreview = document.getElementById('logoPreview');
+  const logoPreviewFallback = document.getElementById('logoPreviewFallback');
+  let currentLogoImage = '';
+
+  function showLogoPreview(logoImage, logoText) {
+    currentLogoImage = logoImage || '';
+    if (currentLogoImage) {
+      logoPreview.src = currentLogoImage;
+      logoPreview.style.display = 'block';
+      logoPreviewFallback.style.display = 'none';
+    } else {
+      logoPreview.style.display = 'none';
+      logoPreviewFallback.style.display = 'flex';
+      logoPreviewFallback.textContent = logoText || '';
+    }
+  }
+
+  form.logoFile.addEventListener('change', () => {
+    const file = form.logoFile.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => showLogoPreview(reader.result, form.logo.value);
+    reader.readAsDataURL(file);
+  });
+  form.logo.addEventListener('input', () => {
+    if (!currentLogoImage) logoPreviewFallback.textContent = form.logo.value.toUpperCase();
+  });
+
+  function openModal(item) {
+    form.reset();
+    if (item) {
+      modalTitle.textContent = 'Loyihani tahrirlash';
+      form.id.value = item.id;
+      form.title.value = item.title;
+      form.object.value = item.object;
+      form.logo.value = item.logo || '';
+      form.website.value = item.website || '';
+      form.desc.value = item.desc;
+      showLogoPreview(item.logoImage, item.logo);
+    } else {
+      modalTitle.textContent = "Loyiha qo'shish";
+      form.id.value = '';
+      showLogoPreview('', '');
+    }
+    overlay.classList.add('open');
+  }
+  function closeModal() { overlay.classList.remove('open'); }
+
+  document.getElementById('addBtn').addEventListener('click', () => openModal(null));
+  document.getElementById('cancelBtn').addEventListener('click', closeModal);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form).entries());
+    const payload = {
+      title: data.title.trim(),
+      object: data.object.trim(),
+      logo: data.logo.trim().toUpperCase().slice(0, 3) || data.title.trim().slice(0, 2).toUpperCase(),
+      logoImage: currentLogoImage,
+      website: data.website.trim(),
+      desc: data.desc.trim(),
+    };
+    if (data.id) {
+      updateItem('projects', Number(data.id), payload);
+    } else {
+      payload.createdAt = new Date().toISOString().slice(0, 10);
+      addItem('projects', payload);
+    }
+    closeModal();
+    render();
+  });
+
+  function render() {
+    const items = getAll('projects');
+    const tbody = document.getElementById('rows');
+    if (!items.length) {
+      tbody.innerHTML = `<tr><td colspan="6" class="empty-state">Loyihalar yo'q. Yuqoridagi tugma orqali qo'shing.</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = items.map(p => `
+      <tr>
+        <td>${p.logoImage ? `<img class="mini-thumb" style="border-radius:9px;width:36px;height:36px;object-fit:cover;" src="${escapeHtml(p.logoImage)}" alt="">` : `<span class="mini-logo">${escapeHtml(p.logo || '')}</span>`}</td>
+        <td><strong>${escapeHtml(p.title)}</strong></td>
+        <td>${escapeHtml(p.object || '-')}</td>
+        <td>${escapeHtml(p.desc)}</td>
+        <td>${fmtDate(p.createdAt)}</td>
+        <td class="actions">
+          <button class="btn btn--outline btn--icon" data-edit="${p.id}">✏️</button>
+          <button class="btn btn--danger btn--icon" data-del="${p.id}">🗑️</button>
+        </td>
+      </tr>
+    `).join('');
+
+    tbody.querySelectorAll('[data-edit]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = items.find(i => i.id === Number(btn.dataset.edit));
+        openModal(item);
+      });
+    });
+    tbody.querySelectorAll('[data-del]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (confirm("Ushbu loyihani o'chirishni tasdiqlaysizmi?")) {
+          deleteItem('projects', Number(btn.dataset.del));
+          render();
+        }
+      });
+    });
+  }
+
+  render();
+</script>
+</body>
+</html>
