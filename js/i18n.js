@@ -12,7 +12,7 @@ const I18N = {
     'nav.news': 'Yangiliklar',
     'nav.contact': 'Kontaktlar',
     'header.cta': "So'rov qoldirish",
-    'dealer.text': 'AKUVOX rasmiy dileri',
+    'dealer.text': 'SafeHome.uz — Akuvox rasmiy distributori',
 
     'hero.titleLead': 'Aqlli uy va xavfsizlik tizimlari —',
     'hero.ctaPrimary': "So'rov yuborish",
@@ -139,7 +139,7 @@ const I18N = {
     'nav.news': 'Новости',
     'nav.contact': 'Контакты',
     'header.cta': 'Оставить заявку',
-    'dealer.text': 'Официальный дилер AKUVOX',
+    'dealer.text': 'SafeHome.uz — официальный дистрибьютор Akuvox',
 
     'hero.titleLead': 'Умный дом и системы безопасности —',
     'hero.ctaPrimary': 'Отправить заявку',
@@ -266,7 +266,7 @@ const I18N = {
     'nav.news': 'News',
     'nav.contact': 'Contact',
     'header.cta': 'Request a quote',
-    'dealer.text': 'AKUVOX Official Dealer',
+    'dealer.text': 'SafeHome.uz — Official Akuvox Distributor',
 
     'hero.titleLead': 'Smart home and security systems —',
     'hero.ctaPrimary': 'Send request',
