@@ -5,6 +5,7 @@ const NAV_ITEMS = [
   { href: 'dashboard.html', icon: '📊', label: 'Bosh panel' },
   { href: 'products.html', icon: '📦', label: 'Mahsulotlar' },
   { href: 'categories.html', icon: '🗂️', label: 'Kategoriyalar' },
+  { href: 'feature-banners.html', icon: '🖼️', label: 'Katta bannerlar' },
   { href: 'projects.html', icon: '🏗️', label: 'Loyihalar' },
   { href: 'applications.html', icon: '🏠', label: "Qo'llanilish" },
   { href: 'requests.html', icon: '📥', label: "So'rovlar" },

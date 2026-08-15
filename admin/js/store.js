@@ -8,6 +8,7 @@ const DB_KEYS = {
   requests: 'sh_admin_requests',
   posts: 'sh_admin_posts',
   banner: 'sh_admin_banner',
+  featureBanners: 'sh_admin_feature_banners',
   contactInfo: 'sh_admin_contact_info',
   about: 'sh_admin_about',
   auth: 'sh_admin_auth',
@@ -136,6 +137,10 @@ const SEED = {
     { id: 6, slug: 'access', category: 'Access control', title: 'Access control', desc: "Karta, kod va yuzni tanish orqali kirishni nazorat qilish." },
     { id: 7, slug: 'terminal', category: 'Kirish nazorati kontrollerlari', title: 'Kirish nazorati kontrollerlari', desc: "Eshik kontrollerlari, IP kirish terminallari, karta o'quvchilar va aksessuarlar." },
     { id: 8, slug: 'ipphone', category: 'IP telefonlar', title: 'IP telefonlar', desc: "Ofis va uy uchun IP telefonlar." },
+  ],
+  featureBanners: [
+    { id: 1, image: 'assets/img/akubela-ref/HyPanel-Lux-big.jpg', label: 'ENG AQLLI BOSHQARUV', title: 'HyPanel Lux boshqaruv paneli', link: 'product.html?cat=panel', createdAt: '2026-08-15' },
+    { id: 2, image: 'assets/img/akubela-ref/395864aca24a14980474e6b7232e92fa.png', label: 'XAVFSIZLIK TIZIMI', title: 'Yagona uy xavfsizligi', link: 'product.html?cat=access', createdAt: '2026-08-15' },
   ],
   applications: [
     { id: 1, title: 'Elita villalar', icon: '🏡', image: 'assets/img/applications/residential.jpg', link: '#contact', createdAt: '2026-08-06' },

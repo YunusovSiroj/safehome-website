@@ -151,6 +151,45 @@ if (typeof getAll === 'function') {
   }
 }
 
+// Shop by Category — 6-icon quick nav row, pulled from admin CMS (Kategoriyalar)
+if (typeof getAll === 'function') {
+  const categories = getAll('categories');
+  const products = getAll('products');
+  const grid = document.getElementById('shopCatGrid');
+  if (grid && categories.length) {
+    grid.innerHTML = categories.slice(0, 6).map((cat) => {
+      const firstProduct = products.find((p) => p.category === cat.category);
+      const img = firstProduct ? firstProduct.img : '';
+      const isImage = typeof img === 'string' && img.includes('/');
+      const imgSrc = isImage ? img.replace(/^\.\.\//, '') : '';
+      const media = isImage
+        ? `<img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(cat.title)}" loading="lazy">`
+        : `<span class="icon-fallback">${img || ''}</span>`;
+      return `
+      <a href="product.html?cat=${cat.slug}" class="shop-cat__item">
+        <div class="shop-cat__media">${media}</div>
+        <span>${escapeHtml(cat.category)}</span>
+      </a>
+    `;
+    }).join('');
+  }
+
+  const banners = getAll('featureBanners');
+  const bannerGrid = document.getElementById('shopCatBanners');
+  if (bannerGrid && banners.length) {
+    bannerGrid.innerHTML = banners.map((b) => `
+      <a href="${escapeHtml(b.link || '#contact')}" class="shop-cat__banner">
+        <img src="${escapeHtml(b.image)}" alt="${escapeHtml(b.title)}">
+        <div class="shop-cat__banner-text">
+          <span class="shop-cat__banner-label">${escapeHtml(b.label)}</span>
+          <h3>${escapeHtml(b.title)}</h3>
+          <span class="shop-cat__banner-link">Batafsil →</span>
+        </div>
+      </a>
+    `).join('');
+  }
+}
+
 // Product spotlight — one card per category, pulled from admin CMS (Mahsulotlar)
 if (typeof getAll === 'function') {
   const categories = getAll('categories');
