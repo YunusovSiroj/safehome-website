@@ -120,8 +120,10 @@
         <textarea name="excerpt" rows="3" required></textarea>
       </div>
       <div class="form__row">
-        <label>Rasm (URL, ixtiyoriy)</label>
-        <input type="text" name="image" placeholder="assets/img/...">
+        <label>Rasm (ixtiyoriy)</label>
+        <input type="file" id="imageFile" accept="image/*">
+        <input type="hidden" name="image">
+        <img id="imagePreview" alt="" style="display:none; max-width:160px; max-height:110px; object-fit:cover; border-radius:8px; margin-top:8px;">
       </div>
       <div class="form__row">
         <label>Instagram yoki YouTube link (ixtiyoriy)</label>
@@ -197,9 +199,24 @@
   const overlay = document.getElementById('modalOverlay');
   const form = document.getElementById('postForm');
   const modalTitle = document.getElementById('modalTitle');
+  const imageFile = document.getElementById('imageFile');
+  const imagePreview = document.getElementById('imagePreview');
+
+  function showPreview(src) {
+    if (src) { imagePreview.src = src; imagePreview.style.display = 'block'; }
+    else { imagePreview.removeAttribute('src'); imagePreview.style.display = 'none'; }
+  }
+  imageFile.addEventListener('change', () => {
+    const file = imageFile.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => { form.image.value = reader.result; showPreview(reader.result); };
+    reader.readAsDataURL(file);
+  });
 
   function openModal(item) {
     form.reset();
+    imageFile.value = '';
     if (item) {
       modalTitle.textContent = 'Postni tahrirlash';
       form.id.value = item.id;
@@ -207,9 +224,11 @@
       form.excerpt.value = item.excerpt;
       form.image.value = item.image || '';
       form.socialUrl.value = item.socialUrl || '';
+      showPreview(item.image || '');
     } else {
       modalTitle.textContent = "Post qo'shish";
       form.id.value = '';
+      showPreview('');
     }
     overlay.classList.add('open');
   }

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<title>Diagnostika</title>
+<style>
+  body { font-family: monospace; padding: 24px; background: #0b1520; color: #d7e3ec; font-size: 15px; line-height: 1.6; }
+  h2 { color: #5fefff; }
+  .box { background: #101d2b; border: 1px solid #23384a; border-radius: 8px; padding: 16px; margin-bottom: 16px; word-break: break-all; white-space: pre-wrap; }
+  .label { color: #8fb3c7; font-size: 13px; margin-bottom: 6px; }
+  .ok { color: #6cd67a; }
+  .bad { color: #ff6b6b; }
+</style>
+</head>
+<body>
+<h2>SafeHome — Diagnostika</h2>
+<div class="label">Manzil (URL):</div>
+<div class="box" id="url"></div>
+<div class="label">Kontakt ma'lumot (sh_admin_contact_info):</div>
+<div class="box" id="contact"></div>
+<div class="label">Postlar (sh_admin_posts):</div>
+<div class="box" id="posts"></div>
+<div class="label">Login sessiyasi (sh_admin_auth):</div>
+<div class="box" id="auth"></div>
+<script>
+document.getElementById('url').textContent = location.href;
+const c = localStorage.getItem('sh_admin_contact_info');
+document.getElementById('contact').innerHTML = c ? '<span class="ok">' + c + '</span>' : '<span class="bad">BO\'SH — hech narsa saqlanmagan</span>';
+const p = localStorage.getItem('sh_admin_posts');
+document.getElementById('posts').innerHTML = p ? '<span class="ok">' + p + '</span>' : '<span class="bad">BO\'SH — hech narsa saqlanmagan</span>';
+document.getElementById('auth').textContent = sessionStorage.getItem('sh_admin_auth') || '(yo\'q)';
+</script>
+</body>
+</html>

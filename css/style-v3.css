@@ -561,6 +561,14 @@ img.case-row__logo { object-fit: cover; background: var(--bg); border: 1px solid
   .footer__grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 640px) {
+  .dealer-strip__inner { flex-wrap: wrap; gap: 8px 14px; padding: 8px 16px; }
+  .dealer-strip__text { white-space: normal; text-align: center; font-size: 11px; }
+  .dealer-strip__brand { padding-right: 0; border-right: none; }
+  .container { padding: 0 18px; }
+  .header__inner { padding: 14px 18px; gap: 12px; }
+  .logo img { height: 44px; }
+  .header__actions { gap: 10px; }
+  .header__actions .btn--sm { display: none; }
   .hero__text h1 { font-size: 34px; }
   .hero__stats { flex-wrap: wrap; gap: 24px; }
   .why-grid { grid-template-columns: 1fr; }
