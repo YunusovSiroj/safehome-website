@@ -247,6 +247,30 @@ function migrateDefaultProductPhotos() {
   localStorage.setItem(MIGRATION_KEY, '1');
 }
 
+// --- Server sync (shared across sefhome.uz and www.sefhome.uz, which are
+// separate localStorage origins) — best-effort, never blocks the UI. ---
+const API_BASE = 'https://www.sefhome.uz/api/store';
+
+function apiPush(key, value) {
+  fetch(API_BASE, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ key, value }),
+  }).catch(() => {});
+}
+
+function syncFromServer() {
+  return fetch(API_BASE)
+    .then((r) => r.json())
+    .then((remote) => {
+      Object.keys(remote).forEach((k) => {
+        if (remote[k] !== undefined) localStorage.setItem(k, JSON.stringify(remote[k]));
+      });
+      return remote;
+    })
+    .catch(() => null);
+}
+
 function getAll(key) {
   seedIfEmpty();
   return JSON.parse(localStorage.getItem(DB_KEYS[key]) || '[]');
@@ -254,6 +278,7 @@ function getAll(key) {
 
 function saveAll(key, items) {
   localStorage.setItem(DB_KEYS[key], JSON.stringify(items));
+  apiPush(DB_KEYS[key], items);
 }
 
 function nextId(items) {
@@ -284,6 +309,7 @@ function getBanner() {
 }
 function saveBanner(obj) {
   localStorage.setItem(DB_KEYS.banner, JSON.stringify(obj));
+  apiPush(DB_KEYS.banner, obj);
 }
 
 // --- Contact info (singular object, not a list) ---
@@ -293,6 +319,7 @@ function getContactInfo() {
 }
 function saveContactInfo(obj) {
   localStorage.setItem(DB_KEYS.contactInfo, JSON.stringify(obj));
+  apiPush(DB_KEYS.contactInfo, obj);
 }
 
 // --- About / company info (singular object, not a list) ---
@@ -302,6 +329,7 @@ function getAbout() {
 }
 function saveAbout(obj) {
   localStorage.setItem(DB_KEYS.about, JSON.stringify(obj));
+  apiPush(DB_KEYS.about, obj);
 }
 
 // --- Auth (demo only — not secure, for local prototype purposes) ---

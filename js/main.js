@@ -87,6 +87,11 @@ const nav = document.getElementById('nav');
 burger?.addEventListener('click', () => nav.classList.toggle('is-open'));
 nav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => nav.classList.remove('is-open')));
 
+// All CMS-driven sections below are re-run once after syncFromServer() resolves,
+// so the page repaints with the latest admin data regardless of which origin
+// (sefhome.uz / www.sefhome.uz) the edit was made from.
+function renderCmsContent() {
+
 // Hero banner — pulled from admin CMS (localStorage), falls back to static HTML if store.js isn't loaded
 if (typeof getBanner === 'function') {
   const banner = getBanner();
@@ -257,6 +262,13 @@ if (typeof getAll === 'function') {
     `;
     }).join('');
   }
+}
+
+} // end renderCmsContent
+
+renderCmsContent();
+if (typeof syncFromServer === 'function') {
+  syncFromServer().then(renderCmsContent);
 }
 
 // Request form — saved into admin CMS (localStorage) so it appears in admin/requests.html

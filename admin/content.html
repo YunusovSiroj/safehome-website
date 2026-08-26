@@ -143,9 +143,33 @@
   // Banner form
   const bannerForm = document.getElementById('bannerForm');
   const savedHint = document.getElementById('savedHint');
-  const banner = getBanner();
-  bannerForm.eyebrow.value = banner.eyebrow;
-  bannerForm.desc.value = banner.desc;
+  const aboutForm = document.getElementById('aboutForm');
+  const contactInfoForm = document.getElementById('contactInfoForm');
+
+  // Re-populate every form (and the posts table, further below) from whatever
+  // is currently in localStorage — called once immediately, then again once
+  // syncFromServer() resolves so edits made from the other origin show up too.
+  function refreshFromStore() {
+    const banner = getBanner();
+    bannerForm.eyebrow.value = banner.eyebrow;
+    bannerForm.desc.value = banner.desc;
+
+    const about = getAbout();
+    aboutForm.title.value = about.title;
+    aboutForm.desc.value = about.desc;
+    aboutForm.director.value = about.director;
+    aboutForm.address.value = about.address;
+    aboutForm.activity.value = about.activity;
+
+    const contactInfo = getContactInfo();
+    contactInfoForm.address.value = contactInfo.address;
+    contactInfoForm.phone.value = contactInfo.phone;
+    contactInfoForm.email.value = contactInfo.email;
+    contactInfoForm.telegram.value = contactInfo.telegram;
+
+    if (typeof render === 'function') render();
+  }
+
   bannerForm.addEventListener('submit', (e) => {
     e.preventDefault();
     saveBanner({ eyebrow: bannerForm.eyebrow.value.trim(), desc: bannerForm.desc.value.trim() });
@@ -154,14 +178,7 @@
   });
 
   // About form
-  const aboutForm = document.getElementById('aboutForm');
   const aboutSavedHint = document.getElementById('aboutSavedHint');
-  const about = getAbout();
-  aboutForm.title.value = about.title;
-  aboutForm.desc.value = about.desc;
-  aboutForm.director.value = about.director;
-  aboutForm.address.value = about.address;
-  aboutForm.activity.value = about.activity;
   aboutForm.addEventListener('submit', (e) => {
     e.preventDefault();
     saveAbout({
@@ -176,13 +193,7 @@
   });
 
   // Contact info form
-  const contactInfoForm = document.getElementById('contactInfoForm');
   const contactSavedHint = document.getElementById('contactSavedHint');
-  const contactInfo = getContactInfo();
-  contactInfoForm.address.value = contactInfo.address;
-  contactInfoForm.phone.value = contactInfo.phone;
-  contactInfoForm.email.value = contactInfo.email;
-  contactInfoForm.telegram.value = contactInfo.telegram;
   contactInfoForm.addEventListener('submit', (e) => {
     e.preventDefault();
     saveContactInfo({
@@ -278,7 +289,10 @@
       });
     });
   }
-  render();
+  refreshFromStore();
+  if (typeof syncFromServer === 'function') {
+    syncFromServer().then(refreshFromStore);
+  }
 </script>
 </body>
 </html>
