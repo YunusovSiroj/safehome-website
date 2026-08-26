@@ -112,6 +112,13 @@ if (typeof getContactInfo === 'function') {
   if (phoneEl) phoneEl.textContent = contactInfo.phone;
   if (emailEl) emailEl.textContent = contactInfo.email;
   if (telegramEl) telegramEl.textContent = contactInfo.telegram;
+
+  const footerAddressEl = document.getElementById('footerContactAddress');
+  const footerPhoneEl = document.getElementById('footerContactPhone');
+  const footerEmailEl = document.getElementById('footerContactEmail');
+  if (footerAddressEl) footerAddressEl.textContent = contactInfo.address;
+  if (footerPhoneEl) footerPhoneEl.textContent = contactInfo.phone;
+  if (footerEmailEl) footerEmailEl.textContent = contactInfo.email;
 }
 
 // About / company info — pulled from admin CMS
