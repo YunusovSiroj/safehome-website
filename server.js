@@ -6,6 +6,19 @@ const PORT = process.env.PORT || 3000;
 const ROOT = __dirname;
 const DATA_DIR = path.join(ROOT, "data");
 const DATA_FILE = path.join(DATA_DIR, "store.json");
+const SEED_FILE = path.join(ROOT, "store.seed.json");
+
+// Committed baseline CMS content — parsed once at boot. The Railway container
+// disk is not persistent, so data/store.json is wiped on every redeploy; the
+// seed guarantees the site never falls back to the hardcoded placeholders.
+// Live edits (data/store.json) always override the seed, key by key.
+const SEED = (() => {
+  try {
+    return JSON.parse(fs.readFileSync(SEED_FILE, "utf8"));
+  } catch (e) {
+    return {};
+  }
+})();
 
 const MIME = {
   ".html": "text/html; charset=utf-8",
@@ -23,11 +36,13 @@ const MIME = {
 };
 
 function loadStore() {
+  let disk = {};
   try {
-    return JSON.parse(fs.readFileSync(DATA_FILE, "utf8"));
+    disk = JSON.parse(fs.readFileSync(DATA_FILE, "utf8"));
   } catch (e) {
-    return {};
+    disk = {};
   }
+  return { ...SEED, ...disk };
 }
 
 function saveStore(store) {

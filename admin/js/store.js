@@ -251,16 +251,52 @@ function migrateDefaultProductPhotos() {
 // separate localStorage origins) — best-effort, never blocks the UI. ---
 const API_BASE = 'https://www.sefhome.uz/api/store';
 
+const PUSH_QUEUE_KEY = 'sh_admin_push_queue';
+
+// Any push that doesn't confirm (offline, server hiccup, wrong origin) is parked
+// in localStorage and retried on the next page load, so an edit can never be
+// silently lost the way it was before this queue existed.
+function queueAdd(key, value) {
+  try {
+    const q = JSON.parse(localStorage.getItem(PUSH_QUEUE_KEY) || '{}');
+    q[key] = value;
+    localStorage.setItem(PUSH_QUEUE_KEY, JSON.stringify(q));
+  } catch (e) {}
+}
+function queueDrop(key) {
+  try {
+    const q = JSON.parse(localStorage.getItem(PUSH_QUEUE_KEY) || '{}');
+    if (key in q) {
+      delete q[key];
+      localStorage.setItem(PUSH_QUEUE_KEY, JSON.stringify(q));
+    }
+  } catch (e) {}
+}
+function flushQueue() {
+  let q;
+  try { q = JSON.parse(localStorage.getItem(PUSH_QUEUE_KEY) || '{}'); } catch (e) { return Promise.resolve(); }
+  return Promise.all(Object.keys(q).map((key) => apiPush(key, q[key])));
+}
+
 function apiPush(key, value) {
-  fetch(API_BASE, {
+  return fetch(API_BASE, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ key, value }),
-  }).catch(() => {});
+  })
+    .then((r) => {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      queueDrop(key);
+    })
+    .catch((e) => {
+      console.warn('[store] server save failed, queued for retry:', key, e && e.message);
+      queueAdd(key, value);
+    });
 }
 
 function syncFromServer() {
-  return fetch(API_BASE)
+  return flushQueue()
+    .then(() => fetch(API_BASE))
     .then((r) => r.json())
     .then((remote) => {
       Object.keys(remote).forEach((k) => {
