@@ -108,42 +108,48 @@
 <script>
 // Category headings + product list both come live from the admin CMS
 // (admin/categories.html and admin/products.html).
-const categories = typeof getAll === 'function' ? getAll('categories') : [];
-const params = new URLSearchParams(location.search);
-const requestedSlug = params.get('cat');
-const meta = categories.find((c) => c.slug === requestedSlug) || categories[0];
+function renderCategory() {
+  const categories = typeof getAll === 'function' ? getAll('categories') : [];
+  const params = new URLSearchParams(location.search);
+  const requestedSlug = params.get('cat');
+  const meta = categories.find((c) => c.slug === requestedSlug) || categories[0];
 
-document.getElementById('catTitle').textContent = meta.title;
-document.getElementById('catDesc').textContent = meta.desc;
+  document.getElementById('catTitle').textContent = meta.title;
+  document.getElementById('catDesc').textContent = meta.desc;
 
-const allProducts = typeof getAll === 'function' ? getAll('products') : [];
-const items = allProducts.filter((p) => p.category === meta.category);
+  const allProducts = typeof getAll === 'function' ? getAll('products') : [];
+  const items = allProducts.filter((p) => p.category === meta.category);
 
-const gallery = document.getElementById('catGallery');
-if (items.length) {
-  gallery.innerHTML = items.map((p) => {
-    const isImage = typeof p.img === 'string' && p.img.includes('/');
-    const src = isImage ? p.img.replace(/^\.\.\//, '') : '';
-    const caption = p.desc ? `${p.name} — ${p.desc}` : p.name;
-    const media = isImage
-      ? `<img src="${src}" alt="${caption}" loading="lazy">`
-      : `<span class="icon-fallback">${p.img || '📦'}</span>`;
-    return `
-    <div class="gallery-grid__item" data-src="${src}" data-caption="${caption}">
-      <div class="gallery-grid__media">${media}</div>
-      <div class="gallery-grid__caption">${caption}</div>
-    </div>
-  `;
-  }).join('');
-} else {
-  gallery.innerHTML = `<div class="empty-note" style="grid-column:1/-1;">Bu kategoriya uchun rasmlar tez orada qo'shiladi.</div>`;
+  const gallery = document.getElementById('catGallery');
+  if (items.length) {
+    gallery.innerHTML = items.map((p) => {
+      const isImage = typeof p.img === 'string' && p.img.includes('/');
+      const src = isImage ? p.img.replace(/^\.\.\//, '') : '';
+      const caption = p.desc ? `${p.name} — ${p.desc}` : p.name;
+      const media = isImage
+        ? `<img src="${src}" alt="${caption}" loading="lazy">`
+        : `<span class="icon-fallback">${p.img || '📦'}</span>`;
+      return `
+      <div class="gallery-grid__item" data-src="${src}" data-caption="${caption}">
+        <div class="gallery-grid__media">${media}</div>
+        <div class="gallery-grid__caption">${caption}</div>
+      </div>
+    `;
+    }).join('');
+  } else {
+    gallery.innerHTML = `<div class="empty-note" style="grid-column:1/-1;">Bu kategoriya uchun rasmlar tez orada qo'shiladi.</div>`;
+  }
 }
+renderCategory();
+// Page loads with whatever is cached locally; re-render once the live CMS data arrives
+// so new categories (e.g. ?cat=led) show up on a first visit too.
+if (typeof syncFromServer === 'function') syncFromServer().then(renderCategory);
 
 // Lightbox
 const lightbox = document.getElementById('lightbox');
 const lbImg = document.getElementById('lbImg');
 const lbCaption = document.getElementById('lbCaption');
-gallery.addEventListener('click', (e) => {
+document.getElementById('catGallery').addEventListener('click', (e) => {
   const item = e.target.closest('.gallery-grid__item');
   if (!item) return;
   lbImg.style.width = '';
