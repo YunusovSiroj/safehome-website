@@ -348,7 +348,7 @@ form?.addEventListener('submit', (e) => {
   }, 2200);
 });
 
-// Hero visual — auto-rotating product slider (3 sets of 4 images, crossfade)
+// Hero visual — auto-rotating product slider (4 sets of 4 images, crossfade)
 (function heroSlider() {
   const grid = document.getElementById('heroVisualGrid');
   const rail = document.getElementById('heroRail');
@@ -372,6 +372,12 @@ form?.addEventListener('submit', (e) => {
       { src: 'assets/img/akubela-ref/knx-scene-panel.png', alt: 'Scene panel' },
       { src: 'assets/img/akubela-ref/458dcb428640bfa17bde85eca8d195a9.png', alt: 'Smart panel' },
       { src: 'assets/img/akubela-ref/569523626f45a19aa28512cf7596ce5d.png', alt: 'Smart panel' },
+    ],
+    [
+      { src: 'assets/img/led-bracelet/led-01.jpg', alt: 'LED bilaguzuk' },
+      { src: 'assets/img/led-bracelet/led-02.jpg', alt: 'LED bilaguzuklar, 15 rang' },
+      { src: 'assets/img/led-bracelet/led-03.jpg', alt: 'LED bilaguzuk va DMX512 pult' },
+      { src: 'assets/img/led-bracelet/led-04.jpg', alt: 'Stadiondagi LED shou' },
     ],
   ];
 

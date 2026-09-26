@@ -249,7 +249,10 @@ function migrateDefaultProductPhotos() {
 
 // --- Server sync (shared across sefhome.uz and www.sefhome.uz, which are
 // separate localStorage origins) — best-effort, never blocks the UI. ---
-const API_BASE = 'https://www.sefhome.uz/api/store';
+// Local dev (localhost / LAN IP) talks to its own server so previews never write to production.
+const API_BASE = /^(localhost|127\.|192\.168\.|10\.)/.test(location.hostname)
+  ? '/api/store'
+  : 'https://www.sefhome.uz/api/store';
 
 const PUSH_QUEUE_KEY = 'sh_admin_push_queue';
 

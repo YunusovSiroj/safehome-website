@@ -312,6 +312,7 @@ h1, h2, h3, h4 { margin: 0 0 .5em; line-height: 1.1; font-weight: 800; letter-sp
 .shop-cat__media img { max-width: 100%; max-height: 100%; object-fit: contain; }
 .shop-cat__item span { font-size: 13.5px; font-weight: 700; }
 .shop-cat__banners { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.shop-cat__banner:last-child:nth-child(odd) { grid-column: 1 / -1; }
 .shop-cat__banner {
   position: relative; display: block; overflow: hidden;
   height: 320px; border-radius: var(--radius-lg);
